@@ -24,9 +24,9 @@ fnumber ({digit}*\.{digit}+)
 %%
 
 "/*"        { BEGIN(CMT); }
-<CMT>"*/"   { BEGIN(INITIAL); }
-<CMT>\n     {;}
-<CMT>.      {;}
+<CMT>\r?\n   { ; }
+<CMT>.     { ; }
+<CMT>"*/"      { BEGIN(INITIAL); }
 "//".*      {;}
 "\""        { BEGIN(STRCOND);
                 return '"';
@@ -34,9 +34,10 @@ fnumber ({digit}*\.{digit}+)
 <STRCOND>"\""   { BEGIN(INITIAL);
                 return '"';
             }
-<STRCOND>[^\"]* { yylval.s_val = strdup(yytext);
+<STRCOND>(\\\"|[^\"])* { yylval.s_val = strdup(yytext);
                 return STRING_LIT;
             }
+\r?\n       {;}
 "str"       { return STR; }
 ">>"        { return RSHIFT; }
 "<<"        { return LSHIFT; }
@@ -81,7 +82,7 @@ fnumber ({digit}*\.{digit}+)
 "else"      { return ELSE; }
 "for"       { return FOR; }
 "while"     { return WHILE; }
-"loop"      {return LOOP; }
+"loop"      { return LOOP; }
 "i32"       { return INT; }
 "f32"       { return FLOAT;}
 "bool"      { return BOOL; }
@@ -99,7 +100,7 @@ fnumber ({digit}*\.{digit}+)
 {fnumber}   { yylval.f_val = atof(yytext);
                 return FLOAT_LIT;
             }
-{id}        { yylval.s_val = strdup(yytext); return ID;}
+{id}        { yylval.s_val = strdup(yytext); return IDENT;}
 <<EOF>>     { static int once = 0;
                 if (once++) {
                     yyterminate();

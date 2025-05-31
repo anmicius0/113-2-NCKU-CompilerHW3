@@ -1,0 +1,7 @@
+mycompiler.dSYM
+mycompiler
+lex.yy.c
+y.tab.c
+y.tab.h
+Main.j
+y.output
