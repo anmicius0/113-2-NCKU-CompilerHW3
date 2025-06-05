@@ -36,3 +36,8 @@ judge: all
 
 clean:
 	rm -f ${COMPILER} y.tab.* y.output lex.* ${EXEC}.class *.j
+
+debug:
+	${MAKE} clean
+	${MAKE} all
+	./mycompiler < input/a06_if.rs && rm -f Main.class && make -s Main.class && make -s run > a06_if_output.txt

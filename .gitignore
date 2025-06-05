@@ -3,5 +3,9 @@ mycompiler
 lex.yy.c
 y.tab.c
 y.tab.h
-Main.j
-y.output
+*.j
+*.output
+tmp
+*.txt
+venv
+*.class
